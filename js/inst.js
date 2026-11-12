@@ -88,10 +88,12 @@ for (const el of inst.elements) {
     el.rt.push(p);
   }
 }
+const dimMeshes = [];
 for (const s of inst.static) {
   const mesh = new THREE.Mesh(s.geo, new THREE.MeshStandardMaterial({ color: s.mat.color, roughness: s.mat.rough ?? 0.9, metalness: s.mat.metal ?? 0, map: s.mat.map ?? null, transparent: !!s.mat.opacity, opacity: s.mat.opacity ?? 1, side: s.side ?? THREE.FrontSide }));
   scene.add(mesh);
   nonPickable.push(mesh);
+  if (s.dim) dimMeshes.push(mesh);
 }
 const decals = [];
 for (const d of inst.decals) {
@@ -126,7 +128,7 @@ const flowItems = [];
 // ---------- podświetlenie, wybór, widoczność ----------
 let hovered = null, selected = null, solo = false;
 const HL = new THREE.Color(0xff7a1a);
-const ui = { pins: true, names: false, flow: true, insul: true, labels: true };
+const ui = { pins: false, names: false, flow: true, insul: true, labels: false };
 function refreshPaint() {
   for (const el of inst.elements) {
     const k = el === selected ? 0.42 : el === hovered ? 0.24 : 0;
@@ -139,6 +141,7 @@ function syncVisibility() {
   for (const d of decals) d.mesh.visible = !d.el || shown(d.el);
   flowGroup.visible = ui.flow;
   for (const o of zoneLabels) o.visible = ui.labels;
+  for (const m of dimMeshes) m.visible = ui.labels;
   scheduleOcclusion();
 }
 
@@ -394,6 +397,8 @@ syncVisibility();
 if (q.get('names') === '1') { ui.names = true; $('tNames').checked = true; document.body.classList.add('names'); }
 if (q.get('flow') === '0') { ui.flow = false; $('tFlow').checked = false; syncVisibility(); }
 for (const [k, id] of [['pins', 'tPins'], ['insul', 'tInsul'], ['labels', 'tLabels']]) if (q.get(k) === '0') { ui[k] = false; $(id).checked = false; syncVisibility(); }
+if (q.get('pins') === '1') { ui.pins = true; $('tPins').checked = true; }
+if (q.get('labels') === '1') { ui.labels = true; $('tLabels').checked = true; syncVisibility(); }
 if (q.get('cam')) {
   const [x, y, z, tx, ty, tz] = q.get('cam').split(',').map(Number);
   controls.target.set(tx, ty, tz);

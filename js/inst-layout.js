@@ -271,8 +271,8 @@ export function buildInstallation() {
   STATIC.push({ geo: ceil, mat: { color: 0xd9d6cf, rough: 0.95, opacity: 0.55 } });
   // linie wymiarowe
   const dimMat = { color: 0x495057, rough: 0.6 };
-  STATIC.push({ geo: merge([cyl(v(0, 4, 1150), v(WALL.W, 4, 1150), 2.2, 8), cyl(v(0, 4, 1120), v(0, 4, 1180), 2.2, 8), cyl(v(WALL.W, 4, 1120), v(WALL.W, 4, 1180), 2.2, 8)]), mat: dimMat });
-  STATIC.push({ geo: merge([cyl(v(-60, 0, 20), v(-60, WALL.H, 20), 2.2, 8), cyl(v(-90, 0, 20), v(-30, 0, 20), 2.2, 8), cyl(v(-90, WALL.H, 20), v(-30, WALL.H, 20), 2.2, 8)]), mat: dimMat });
+  STATIC.push({ geo: merge([cyl(v(0, 4, 1150), v(WALL.W, 4, 1150), 2.2, 8), cyl(v(0, 4, 1120), v(0, 4, 1180), 2.2, 8), cyl(v(WALL.W, 4, 1120), v(WALL.W, 4, 1180), 2.2, 8)]), mat: dimMat, dim: true });
+  STATIC.push({ geo: merge([cyl(v(-60, 0, 20), v(-60, WALL.H, 20), 2.2, 8), cyl(v(-90, 0, 20), v(-30, 0, 20), 2.2, 8), cyl(v(-90, WALL.H, 20), v(-30, WALL.H, 20), 2.2, 8)]), mat: dimMat, dim: true });
   LABELS.push({ text: '2000 mm – szerokość ściany', pos: v(WALL.W / 2, 30, 1150), cls: 'dimz' });
   LABELS.push({ text: '2500 mm', pos: v(-60, WALL.H / 2, 20), cls: 'dimz' });
 
