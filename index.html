@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kotłownia – ściana instalacji</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <main id="viewport">
+    <div class="toolbar" id="views">
+      <button data-view="iso" class="on">3D</button>
+      <button data-view="front">Przód</button>
+      <button data-view="isoR">3D z prawej</button>
+      <button data-view="top">Góra</button>
+    </div>
+    <div id="tip" class="tip" hidden></div>
+    <section id="info" class="card info" hidden></section>
+    <section id="bomCard" class="card sheet" hidden>
+      <header><h3>Lista elementów do zakupu</h3><button id="copyBom">Kopiuj listę</button><button class="x" data-close aria-label="Zamknij">×</button></header>
+      <div class="scroll"><table id="bomTable" class="bom"></table></div>
+    </section>
+    <section id="schemaCard" class="card sheet" hidden>
+      <header><h3>Schemat hydrauliczny</h3><button class="x" data-close aria-label="Zamknij">×</button></header>
+      <div class="scroll" id="schemaBox"></div>
+    </section>
+    <div class="hint">Lewy przycisk – obrót · prawy – przesuwanie · kółko – zoom · kliknięcie – opis elementu · Esc – zamknij</div>
+    <div id="loading" class="loading">Buduję instalację…</div>
+  </main>
+
+  <aside id="panel">
+    <header class="head">
+      <h1>Kotłownia – ściana instalacji 2 × 2,5 m</h1>
+      <p>Pompa ciepła alpha innotec SWC 170H · zasobnik Sunex FISH S15 300 · dolne źródło (glikol) · c.o. przez sprzęgło · c.w.u.</p>
+      <p class="links"><a href="zasobnik.html">← Model zasobnika z przekrojami</a></p>
+    </header>
+
+    <section class="block">
+      <h2>Dokumenty</h2>
+      <div class="presets">
+        <button id="openSchema">Schemat hydrauliczny</button>
+        <button id="openBom">Lista elementów do zakupu</button>
+      </div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section class="block">
+      <h2>Widok</h2>
+      <div class="toggles">
+        <label class="chk"><input type="checkbox" id="tPins"><span class="sw"></span>Numery elementów</label>
+        <label class="chk"><input type="checkbox" id="tNames"><span class="sw"></span>Nazwy przy numerach</label>
+        <label class="chk"><input type="checkbox" id="tFlow"><span class="sw"></span>Kierunek przepływu</label>
+        <label class="chk"><input type="checkbox" id="tInsul"><span class="sw"></span>Izolacja rur</label>
+        <label class="chk"><input type="checkbox" id="tLabels"><span class="sw"></span>Opisy obiegów i wymiary</label>
+        <label class="chk"><input type="checkbox" id="tSolo"><span class="sw"></span>Tylko zaznaczony element</label>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Elementy <small>kliknij – opis · pole – widoczność</small></h2>
+      <div id="list"></div>
+    </section>
+
+    <footer class="src" id="srcNote"></footer>
+  </aside>
+</div>
+<script type="module" src="js/inst.js"></script>
+</body>
+</html>

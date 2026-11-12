@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zasobnik MAXI 300 – przekrój 3D</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <main id="viewport">
+    <div class="toolbar" id="views">
+      <button data-view="iso" class="on">3D</button>
+      <button data-view="front">Przód</button>
+      <button data-view="back">Tył</button>
+      <button data-view="right">Prawy bok</button>
+      <button data-view="left">Lewy bok</button>
+      <button data-view="top">Góra</button>
+    </div>
+    <div id="tip" class="tip" hidden></div>
+    <section id="leakCard" class="card leaks" hidden></section>
+    <section id="info" class="card info" hidden></section>
+    <div class="hint">Lewy przycisk – obrót · prawy – przesuwanie · kółko – zoom · kliknięcie – opis elementu · Esc – odznacz</div>
+    <div id="loading" class="loading">Buduję model…</div>
+  </main>
+
+  <aside id="panel">
+    <header class="head">
+      <h1>Zasobnik c.w.u. SUNEX FISH S15 300</h1>
+      <p>„Maxi 1×WS” do pompy ciepła · 06/2017 · nr S15-0160 · wężownica 3,6 m² (glikol PG) · emalia · pianka PU · płaszcz skay</p>
+      <p class="links"><a href="index.html">Ściana instalacji kotłowni →</a></p>
+    </header>
+
+    <section class="block">
+      <h2>Przekrój</h2>
+      <div class="seg" id="modeSeg">
+        <button data-mode="union" class="on">Cięcie płaszczyznami</button>
+        <button data-mode="corner">Wycięcie narożnika</button>
+      </div>
+
+      <div class="plane">
+        <label class="chk"><input type="checkbox" id="aOn" checked><span class="sw"></span><span><i class="dot a"></i>Pionowa A <small>przesuw lewo ↔ prawo</small></span></label>
+        <div class="row">
+          <input type="range" id="aPos" min="-345" max="345" step="1" value="0">
+          <output id="aOut">0 mm</output>
+          <button class="icon" id="aFlip" title="Odwróć – zostaw drugą połowę">⇄</button>
+        </div>
+      </div>
+      <div class="plane off">
+        <label class="chk"><input type="checkbox" id="bOn"><span class="sw"></span><span><i class="dot b"></i>Pionowa B <small>przesuw przód ↔ tył</small></span></label>
+        <div class="row">
+          <input type="range" id="bPos" min="-345" max="345" step="1" value="0">
+          <output id="bOut">0 mm</output>
+          <button class="icon" id="bFlip" title="Odwróć – zostaw drugą połowę">⇄</button>
+        </div>
+      </div>
+      <div class="plane off">
+        <label class="chk"><input type="checkbox" id="hOn"><span class="sw"></span><span><i class="dot h"></i>Pozioma <small>wysokość od spodu obudowy</small></span></label>
+        <div class="row">
+          <input type="range" id="hPos" min="0" max="1640" step="1" value="800">
+          <output id="hOut">800 mm</output>
+          <button class="icon" id="hFlip" title="Odwróć – zostaw górną część">⇅</button>
+        </div>
+        <div class="chips" id="hChips"></div>
+      </div>
+      <div class="row rot">
+        <span>Obrót płaszczyzn pionowych</span>
+        <input type="range" id="rot" min="0" max="180" step="1" value="0">
+        <output id="rotOut">0°</output>
+      </div>
+      <div class="presets" id="presets">
+        <button data-preset="krocce">Przez króćce wody i rewizję</button>
+        <button data-preset="pc">Przez króćce pompy ciepła</button>
+        <button data-preset="przod">Zdjęty przód</button>
+        <button data-preset="cwiartka">Ćwiartka</button>
+        <button data-preset="poziomy">Poziomy</button>
+        <button data-preset="calosc">Bez przekroju</button>
+      </div>
+      <div class="legend">
+        <span><i style="background:#bcc3cb"></i>stal</span>
+        <span><i style="background:#3d70c9"></i>emalia</span>
+        <span><i style="background:#f0d07a"></i>pianka PU</span>
+        <span><i style="background:#8c949e"></i>skay</span>
+        <span><i style="background:#e6e8ea"></i>magnez</span>
+        <span><i style="background:#3a3c42"></i>uszczelka</span>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Górna mufa Rp 1½" <small>co siedzi w miejscu anody</small></h2>
+      <div class="seg three" id="topSeg">
+        <button data-v="anoda" class="on">Anoda (fabrycznie)</button>
+        <button data-v="naczynie">Naczynie (tak było)</button>
+        <button data-v="zawor">Zawór bezp.</button>
+      </div>
+      <p class="note" id="topNote"></p>
+    </section>
+
+    <section class="block">
+      <h2>Pokrywa rewizji <small>mufa 6/4" na grzałkę</small></h2>
+      <div class="seg three" id="flangeSeg">
+        <button data-v="grzalka" class="on">Grzałka (tak było)</button>
+        <button data-v="grzalkaAnoda">Grzałka + anoda M8</button>
+        <button data-v="zaslepka">Korek</button>
+      </div>
+      <p class="note" id="flangeNote"></p>
+    </section>
+
+    <section class="block">
+      <h2>Widok</h2>
+      <div class="toggles">
+        <label class="chk"><input type="checkbox" id="tPins"><span class="sw"></span>Numery elementów</label>
+        <label class="chk"><input type="checkbox" id="tNames"><span class="sw"></span>Nazwy przy numerach</label>
+        <label class="chk"><input type="checkbox" id="tDims"><span class="sw"></span>Wymiary h1–h7, D, d, L</label>
+        <label class="chk"><input type="checkbox" id="tLeaks"><span class="sw"></span>Typowe miejsca przecieków</label>
+        <label class="chk"><input type="checkbox" id="tAccess"><span class="sw"></span>Dostęp przez rewizję do korka dolnego</label>
+        <label class="chk"><input type="checkbox" id="tFrames"><span class="sw"></span>Ramki płaszczyzn cięcia</label>
+        <label class="chk"><input type="checkbox" id="tSolo"><span class="sw"></span>Tylko zaznaczony element</label>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>Elementy <small>kliknij – opis · pole – widoczność</small></h2>
+      <div id="list"></div>
+    </section>
+
+    <section class="block">
+      <h2>Moje pomiary <small>mm od podłogi do osi króćca</small></h2>
+      <div id="meas" class="meas"></div>
+      <div class="actions">
+        <button id="measApply">Przelicz model</button>
+        <button id="measReset">Wróć do danych z karty</button>
+      </div>
+      <p class="note">Twój egzemplarz z 2017 może się różnić od karty z 2022. Zmierz wysokości taśmą, wpisz je i przelicz – model przebuduje króćce, rurki i opisy.</p>
+    </section>
+
+    <footer class="src">
+      <p><b>Źródła:</b> karta Sunex FISH S15 X (08/02/2022) – wysokości przyłączy od podłogi, gwinty, Ø zbiornika 550, izolacja 50 mm; tabliczka zasobnika (2017) – wysokość 1500, średnica 650, wężownica 3,6 m², płyn PG; Twoje zdjęcie – układ dwóch kolumn przyłączy z tyłu. Grzałka i anoda M8 na pokrywie – według instrukcji siostrzanego FISH S16 300 X.</p>
+      <p>Znak <i class="est">≈ szac.</i> oznacza wymiar odczytany z rysunku albo przyjęty, <i class="meas">Twój pomiar</i> – wartość wpisaną przez Ciebie.</p>
+    </footer>
+  </aside>
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
